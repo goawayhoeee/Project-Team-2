@@ -1,4 +1,9 @@
 {
+  "name": "project-team-2",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",
