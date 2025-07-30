@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Gallery Item</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Interest Groups Gallery</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEdit">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavEdit">
+        <ul class="navbar-nav">
+
+          <% if (user && user.role === 'admin') { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/addGallery">Add</a>
+            </li>
+          <% } %>
+          <li class="nav-item">
+            <a class="nav-link" href="/Gallariessearch">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Edit Form Container -->
+  <div class="container">
+    <h1 class="mb-4" style="text-align: center;">Edit Gallery Item</h1>
+    
+    <form action="/editGalleries/<%= gallery.id %>" method="POST" class="mx-auto" style="max-width: 600px;">
+      
+      <!-- Interest Group dropdown -->
+      <div class="mb-3">
+        <label for="ig_id" class="form-label">Interest Group</label>
+        <select class="form-select" id="ig_id" name="ig_id" required>
+        <option value="" disabled>Select Interest Group</option>
+          <% interestGroups.forEach(group => { %>
+            <option value="<%= group.id %>" <%= group.id === gallery.ig_id ? 'selected' : '' %>>
+          <%= group.category %>
+            </option>
+          <% }) %>
+</select>
+      </div>
+
+      <!-- Media URL -->
+      <div class="mb-3">
+        <label for="media_url" class="form-label">Media URL</label>
+        <input
+          type="url"
+          class="form-control"
+          id="media_url"
+          name="media_url"
+          value="<%= gallery.media_url %>"
+          required
+        />
+      </div>
+
+      <!-- Caption -->
+      <div class="mb-3">
+        <label for="caption" class="form-label">Caption</label>
+        <textarea
+          class="form-control"
+          id="caption"
+          name="caption"
+          rows="3"
+          required
+        ><%= gallery.caption %></textarea>
+      </div>
+
+      <!-- Upload Date -->
+      <div class="mb-3">
+        <label for="upload_date" class="form-label">Upload Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="upload_date"
+          name="upload_date"
+          value="<%= gallery.upload_date.toISOString().slice(0,10) %>"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <a href="/" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

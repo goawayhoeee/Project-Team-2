@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Gallery</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Interest Groups Gallery</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAdd">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAdd">
+      <ul class="navbar-nav">
+        <% if (user && user.role === 'admin') { %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/addGallery">Add</a>
+          </li>
+        <% } %>
+        <li class="nav-item">
+          <a class="nav-link" href="/search">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- Form Container -->
+  <div class="container">
+  <h1 class="mb-4" style="text-align: center;">Add New Gallery Item</h1>
+
+    <form action="/addGallery" method="POST" class="mx-auto" style="max-width: 600px;">
+      
+      <!-- ig_id dropdown -->
+      <div class="mb-3">
+        <label for="ig_id" class="form-label">Interest Group</label>
+        <select class="form-select" name="ig_id" id="ig_id" required>
+  <option value="" disabled selected>Select Interest Group</option>
+  <% interestGroups.forEach(group => { %>
+    <option value="<%= group.id %>"><%= group.category %></option>
+  <% }) %>
+</select>
+
+      </div>
+
+      <!-- media_url -->
+      <div class="mb-3">
+        <label for="media_url" class="form-label">Media URL</label>
+        <input
+          type="url"
+          class="form-control"
+          id="media_url"
+          name="media_url"
+          placeholder="https://example.com/image.jpg"
+          required
+        />
+      </div>
+
+      <!-- caption -->
+      <div class="mb-3">
+        <label for="caption" class="form-label">Caption</label>
+        <textarea
+          class="form-control"
+          id="caption"
+          name="caption"
+          rows="3"
+          placeholder="Write a caption"
+          required
+        ></textarea>
+      </div>
+
+      <!-- upload_date -->
+      <div class="mb-3">
+        <label for="upload_date" class="form-label">Upload Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="upload_date"
+          name="upload_date"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Gallery</button>
+      <a href="/GalleriesHomepage" class="btn btn-secondary ms-2">Back</a>
+    </form>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

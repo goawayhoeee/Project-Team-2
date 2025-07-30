@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search Gallery</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .gallery-card {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .gallery-card:hover {
+      transform: scale(1.02);
+    }
+
+    .gallery-img {
+      object-fit: cover;
+      height: 200px;
+    }
+
+    .caption {
+      max-height: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .date {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Interest Groups Gallery</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavSearch">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavSearch">
+        <ul class="navbar-nav">
+          <% if (session && session.members && session.members.role === 'admin') { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/addGallery">Add</a>
+            </li>
+          <% } %>
+          <li class="nav-item">
+            <a class="nav-link active" href="/Gallariessearch">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <h1 class="mb-4">Search Gallery</h1>
+
+    <form method="POST" action="/Gallariessearch" class="mb-4">
+      <div class="input-group">
+        <input
+          type="text"
+          name="keyword"
+          class="form-control"
+          placeholder="Enter keyword (caption, media URL, IG ID)"
+          required
+          value="<%= typeof keyword !== 'undefined' ? keyword : '' %>"
+        />
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
+    <% if (results) { %>
+      <% if (results.length === 0) { %>
+        <div class="alert alert-warning" role="alert">
+          No results found.
+        </div>
+      <% } else { %>
+        <div class="row">
+          <% results.forEach(g => { %>
+            <div class="col-md-4 mb-4">
+              <div class="card gallery-card shadow-sm">
+                <img src="<%= g.media_url %>" class="card-img-top gallery-img" alt="Gallery Image" />
+                <div class="card-body">
+                  <h5 class="card-title">IG ID: <%= g.ig_id %></h5>
+                  <p class="card-text caption"><%= g.caption %></p>
+                  <p class="card-text date">📅 <%= new Date(g.upload_date).toLocaleDateString() %></p>
+                  <% if (session && session.members && session.members.role === 'admin') { %>
+                    <a href="/editGallery/<%= g.id %>" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
+                    <a href="/deleteGallery/<%= g.id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this gallery?')">🗑️ Delete</a>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    <% } %>
+
+    <a href="/" class="btn btn-secondary mt-3">← Back to Gallery</a>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
