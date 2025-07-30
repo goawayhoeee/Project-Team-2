@@ -85,7 +85,7 @@ const validateRegistration = (req, res, next) => {
 app.set('view engine', 'ejs');
 
 // Login (Post + Login)
-app.get('/login', (req, res) => {
+app.get('/', (req, res) => {
     res.render('login', { messages: req.flash('success'), errors: req.flash('error') });
 });
 
@@ -526,5 +526,5 @@ app.post('/Gallariessearch',checkAuthenticated, (req, res) => {
 // Starting the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,() => {
-    console.log(`Server running at http://localhost:${PORT}/login`);
+    console.log(`Server running at http://localhost:${PORT}`);
 });
